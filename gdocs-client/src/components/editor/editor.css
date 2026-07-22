@@ -138,3 +138,13 @@
   pointer-events: none;
   user-select: none;
 }
+
+.comment-highlight {
+  background-color: color-mix(in srgb, #facc15 35%, transparent);
+  cursor: pointer;
+  border-bottom: 2px solid #facc15;
+}
+
+.comment-highlight:hover {
+  background-color: color-mix(in srgb, #facc15 55%, transparent);
+}

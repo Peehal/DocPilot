@@ -5,6 +5,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import documentsRoutes from '../modules/documents/routes.js';
 import uploadsRoutes from '../modules/uploads/routes.js';
 import liveblocksRoutes from '../modules/liveblocks/routes.js';
+import User from '../models/User.js';
 
 const router = Router();
 
@@ -26,6 +27,28 @@ router.get(
       name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
       avatarUrl: user.imageUrl,
     });
+  })
+);
+
+router.get(
+  '/users/search',
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const q = (req.query.q || '').trim();
+    if (!q) return res.json([]);
+
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(escaped, 'i');
+
+    // Not org-scoped yet — searches all synced users. Phase 6 (Clerk
+    // Organizations) should narrow this to the requester's org members.
+    const users = await User.find({
+      $or: [{ name: pattern }, { email: pattern }],
+    })
+      .limit(10)
+      .select('clerkId name email avatarUrl');
+
+    res.json(users);
   })
 );
 

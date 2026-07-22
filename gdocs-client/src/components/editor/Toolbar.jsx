@@ -14,6 +14,8 @@ import {
   AlignCenter,
   AlignRight,
   ImageIcon,
+  MessageSquarePlus,
+  MessagesSquare,
 } from 'lucide-react';
 import { ToolbarButton } from './ToolbarButton';
 import { ToolbarDropdown } from './ToolbarDropdown';
@@ -27,7 +29,7 @@ const TEXT_COLORS = [
   { label: 'Purple', value: '#9333ea' },
 ];
 
-export function Toolbar({ editor, onInsertImage }) {
+export function Toolbar({ editor, onInsertImage, onAddComment, onToggleComments, commentsOpen }) {
   if (!editor) return null;
 
   const headingItems = [1, 2, 3].map((level) => ({
@@ -161,6 +163,16 @@ export function Toolbar({ editor, onInsertImage }) {
       </ToolbarButton>
       <ToolbarButton title="Insert image" onClick={onInsertImage}>
         <ImageIcon size={16} />
+      </ToolbarButton>
+      <ToolbarButton
+        title="Comment on selection"
+        disabled={editor.state.selection.empty}
+        onClick={onAddComment}
+      >
+        <MessageSquarePlus size={16} />
+      </ToolbarButton>
+      <ToolbarButton title="Toggle comments" isActive={commentsOpen} onClick={onToggleComments}>
+        <MessagesSquare size={16} />
       </ToolbarButton>
 
       <div className="mx-1 h-5 w-px bg-border" />

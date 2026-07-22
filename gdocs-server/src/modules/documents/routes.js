@@ -5,6 +5,7 @@ import { validate } from '../../middleware/validate.js';
 import { asyncHandler } from '../../utils/asyncHandler.js';
 import { createDocumentSchema, updateDocumentSchema } from './schema.js';
 import * as documentsController from './controller.js';
+import commentsRoutes from '../comments/routes.js';
 
 const router = Router();
 
@@ -20,5 +21,7 @@ router.patch(
   asyncHandler(documentsController.update)
 );
 router.delete('/:id', requireDocAccess, asyncHandler(documentsController.remove));
+
+router.use('/:id/comments', requireDocAccess, commentsRoutes);
 
 export default router;
