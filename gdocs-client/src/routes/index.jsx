@@ -3,6 +3,8 @@ import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import SignInPage from '@/pages/auth/SignIn';
 import SignUpPage from '@/pages/auth/SignUp';
 import Dashboard from '@/pages/Dashboard';
+import DocumentEditor from '@/pages/DocumentEditor';
+import Profile from '@/pages/Profile';
 
 export default function AppRoutes() {
   return (
@@ -14,6 +16,22 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/documents/:id"
+        element={
+          <ProtectedRoute>
+            <DocumentEditor />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         }
       />
