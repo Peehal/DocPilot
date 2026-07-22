@@ -12,6 +12,7 @@ const DEFAULT_MARGINS = { top: 96, bottom: 96, left: 96, right: 96 };
 export function Editor({ document }) {
   const imageUploadRef = useRef(null);
   const saveTimer = useRef(null);
+  const pendingContentRef = useRef(null);
   const updateDocument = useUpdateDocument(document._id);
   const [isSaving, setIsSaving] = useState(false);
   const [margins, setMargins] = useState(document.margins || DEFAULT_MARGINS);
@@ -21,18 +22,35 @@ export function Editor({ document }) {
     content: document.contentJSON || '',
     shouldRerenderOnTransaction: true,
     onUpdate: ({ editor }) => {
+      const json = editor.getJSON();
+      pendingContentRef.current = json;
       setIsSaving(true);
       clearTimeout(saveTimer.current);
       saveTimer.current = setTimeout(() => {
         updateDocument.mutate(
-          { contentJSON: editor.getJSON() },
-          { onSettled: () => setIsSaving(false) }
+          { contentJSON: json },
+          {
+            onSettled: () => setIsSaving(false),
+            onSuccess: () => {
+              pendingContentRef.current = null;
+            },
+          }
         );
       }, 800);
     },
   });
 
-  useEffect(() => () => clearTimeout(saveTimer.current), []);
+  useEffect(
+    () => () => {
+      clearTimeout(saveTimer.current);
+      // Flush any edit that hadn't hit the debounce yet — otherwise navigating
+      // away right after typing silently discards the last change.
+      if (pendingContentRef.current !== null) {
+        updateDocument.mutate({ contentJSON: pendingContentRef.current });
+      }
+    },
+    []
+  );
 
   const handleMarginsChange = (nextMargins) => {
     setMargins(nextMargins);

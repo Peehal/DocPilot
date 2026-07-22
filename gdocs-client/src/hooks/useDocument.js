@@ -6,6 +6,12 @@ export function useDocument(id) {
     queryKey: ['document', id],
     queryFn: async () => (await api.get(`/documents/${id}`)).data,
     enabled: Boolean(id),
+    // The editor only reads its initial content once at mount, so a stale
+    // cached copy served here would silently show outdated content forever.
+    // gcTime 0 forces a real fetch (and a loading state) on every visit.
+    gcTime: 0,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 }
 
