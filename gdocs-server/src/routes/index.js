@@ -3,10 +3,12 @@ import { clerkClient, getAuth } from '@clerk/express';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import documentsRoutes from '../modules/documents/routes.js';
+import uploadsRoutes from '../modules/uploads/routes.js';
 
 const router = Router();
 
 router.use('/documents', documentsRoutes);
+router.use('/uploads', uploadsRoutes);
 
 router.get('/health', (req, res) => res.json({ ok: true }));
 

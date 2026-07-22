@@ -40,23 +40,8 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-  }
-}
-
-* {
-  border-color: hsl(var(--border));
-}
-
 body {
   margin: 0;
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
 }
 
 @theme inline {

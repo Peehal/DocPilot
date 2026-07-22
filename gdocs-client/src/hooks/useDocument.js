@@ -19,3 +19,11 @@ export function useRenameDocument(id) {
     },
   });
 }
+
+// Fire-and-forget: skips invalidating the document query so a debounced
+// autosave doesn't refetch mid-typing and fight with the editor's own state.
+export function useUpdateDocument(id) {
+  return useMutation({
+    mutationFn: async (updates) => (await api.patch(`/documents/${id}`, updates)).data,
+  });
+}

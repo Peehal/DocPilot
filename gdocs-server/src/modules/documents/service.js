@@ -15,8 +15,8 @@ export function createDocument({ userId, orgId, title }) {
   });
 }
 
-export function renameDocument(id, title) {
-  return Document.findByIdAndUpdate(id, { title }, { new: true });
+export function updateDocument(id, updates) {
+  return Document.findByIdAndUpdate(id, updates, { new: true });
 }
 
 export function deleteDocument(id) {

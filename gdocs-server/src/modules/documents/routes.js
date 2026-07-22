@@ -3,7 +3,7 @@ import { requireAuth } from '../../middleware/requireAuth.js';
 import { requireDocAccess } from '../../middleware/requireDocAccess.js';
 import { validate } from '../../middleware/validate.js';
 import { asyncHandler } from '../../utils/asyncHandler.js';
-import { createDocumentSchema, renameDocumentSchema } from './schema.js';
+import { createDocumentSchema, updateDocumentSchema } from './schema.js';
 import * as documentsController from './controller.js';
 
 const router = Router();
@@ -16,8 +16,8 @@ router.get('/:id', requireDocAccess, asyncHandler(documentsController.getOne));
 router.patch(
   '/:id',
   requireDocAccess,
-  validate(renameDocumentSchema),
-  asyncHandler(documentsController.rename)
+  validate(updateDocumentSchema),
+  asyncHandler(documentsController.update)
 );
 router.delete('/:id', requireDocAccess, asyncHandler(documentsController.remove));
 

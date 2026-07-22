@@ -2,13 +2,23 @@ import { useParams } from 'react-router-dom';
 import { useDocument, useRenameDocument } from '@/hooks/useDocument';
 import { DocHeader } from '@/components/layout/DocHeader';
 import { Loader } from '@/components/shared/Loader';
+import { Editor } from '@/components/editor/Editor';
 
 export default function DocumentEditor() {
   const { id } = useParams();
-  const { data: document, isLoading } = useDocument(id);
+  const { data: document, isLoading, isError, error } = useDocument(id);
   const renameDocument = useRenameDocument(id);
 
   if (isLoading) return <Loader />;
+
+  if (isError) {
+    return (
+      <div className="mx-auto max-w-xl p-8 text-sm text-red-500">
+        Failed to load document: {error.response?.data?.error || error.message}
+      </div>
+    );
+  }
+
   if (!document) return null;
 
   return (
@@ -18,11 +28,7 @@ export default function DocumentEditor() {
         onRename={(title) => renameDocument.mutate(title)}
         isSaving={renameDocument.isPending}
       />
-      <div className="mx-auto max-w-3xl p-8">
-        <div className="flex min-h-[60vh] items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-          Rich text editor arrives in Phase 2.
-        </div>
-      </div>
+      <Editor key={document._id} document={document} />
     </div>
   );
 }

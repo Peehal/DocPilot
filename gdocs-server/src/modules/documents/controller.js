@@ -21,8 +21,8 @@ export async function getOne(req, res) {
   res.json(req.document);
 }
 
-export async function rename(req, res) {
-  const doc = await documentsService.renameDocument(req.params.id, req.body.title);
+export async function update(req, res) {
+  const doc = await documentsService.updateDocument(req.params.id, req.body);
   res.json(doc);
 }
 
