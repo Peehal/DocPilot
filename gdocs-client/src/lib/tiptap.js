@@ -13,9 +13,13 @@ import Color from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Placeholder from '@tiptap/extension-placeholder';
 
-export const editorExtensions = [
+// Undo/redo is disabled here — once a document is in a Liveblocks room, Yjs
+// owns history (via useLiveblocksExtension), so Tiptap's own undo/redo would
+// fight with it.
+export const collaborativeExtensions = [
   StarterKit.configure({
     link: false,
+    undoRedo: false,
   }),
   Underline,
   TextStyle,

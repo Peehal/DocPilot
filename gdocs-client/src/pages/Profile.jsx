@@ -1,10 +1,8 @@
-import { useApiAuthSync } from '@/hooks/useApiAuthSync';
 import { useMe } from '@/hooks/useMe';
 import { Navbar } from '@/components/layout/Navbar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Profile() {
-  useApiAuthSync();
   const { data, isLoading, isError, error } = useMe();
 
   return (

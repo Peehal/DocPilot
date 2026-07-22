@@ -1,15 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
-import { editorExtensions } from '@/lib/tiptap';
+import { collaborativeExtensions } from '@/lib/tiptap';
+import { CollaborativeRoom, useLiveblocksExtension } from '@/lib/collaboration';
 import { useUpdateDocument } from '@/hooks/useDocument';
 import { Toolbar } from './Toolbar';
 import { ImageUpload } from './ImageUpload';
 import { MarginControls } from './MarginControls';
+import { PresenceAvatars } from './PresenceAvatars';
+import { Loader } from '@/components/shared/Loader';
 import './editor.css';
 
 const DEFAULT_MARGINS = { top: 96, bottom: 96, left: 96, right: 96 };
 
 export function Editor({ document }) {
+  return (
+    <CollaborativeRoom roomId={document.liveblocksRoomId} fallback={<Loader />}>
+      <EditorCanvas document={document} />
+    </CollaborativeRoom>
+  );
+}
+
+function EditorCanvas({ document }) {
   const imageUploadRef = useRef(null);
   const saveTimer = useRef(null);
   const pendingContentRef = useRef(null);
@@ -17,9 +28,12 @@ export function Editor({ document }) {
   const [isSaving, setIsSaving] = useState(false);
   const [margins, setMargins] = useState(document.margins || DEFAULT_MARGINS);
 
+  const liveblocksExtension = useLiveblocksExtension({
+    initialContent: document.contentJSON || undefined,
+  });
+
   const editor = useEditor({
-    extensions: editorExtensions,
-    content: document.contentJSON || '',
+    extensions: [liveblocksExtension, ...collaborativeExtensions],
     shouldRerenderOnTransaction: true,
     onUpdate: ({ editor }) => {
       const json = editor.getJSON();
@@ -44,7 +58,9 @@ export function Editor({ document }) {
     () => () => {
       clearTimeout(saveTimer.current);
       // Flush any edit that hadn't hit the debounce yet — otherwise navigating
-      // away right after typing silently discards the last change.
+      // away right after typing silently discards the last change from the
+      // Mongo snapshot (Yjs/Liveblocks already has it live, but the snapshot
+      // used for export/search/previews would still lag behind).
       if (pendingContentRef.current !== null) {
         updateDocument.mutate({ contentJSON: pendingContentRef.current });
       }
@@ -62,7 +78,8 @@ export function Editor({ document }) {
       <Toolbar editor={editor} onInsertImage={() => imageUploadRef.current?.open()} />
       <ImageUpload ref={imageUploadRef} editor={editor} />
 
-      <div className="flex items-center justify-end px-6 py-2">
+      <div className="flex items-center justify-between px-6 py-2">
+        <PresenceAvatars />
         <MarginControls margins={margins} onChange={handleMarginsChange} />
       </div>
 

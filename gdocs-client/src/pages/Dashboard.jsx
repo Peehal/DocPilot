@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, Plus, Trash2 } from 'lucide-react';
-import { useApiAuthSync } from '@/hooks/useApiAuthSync';
 import { useCreateDocument, useDeleteDocument, useDocuments } from '@/hooks/useDocuments';
 import { Navbar } from '@/components/layout/Navbar';
 import { Loader } from '@/components/shared/Loader';
@@ -11,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Dashboard() {
-  useApiAuthSync();
   const navigate = useNavigate();
   const { data: documents, isLoading, isError, error } = useDocuments();
   const createDocument = useCreateDocument();
