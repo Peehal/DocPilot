@@ -4,11 +4,16 @@ import { clerkMiddleware } from '@clerk/express';
 import { env } from './config/env.js';
 import { connectDB } from './config/db.js';
 import routes from './routes/index.js';
+import webhookRoutes from './modules/webhooks/routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
 app.use(cors({ origin: env.clientUrl, credentials: true }));
+
+// Mounted before express.json() — svix needs the raw request body to verify signatures.
+app.use('/api/webhooks', webhookRoutes);
+
 app.use(express.json());
 app.use(clerkMiddleware());
 
