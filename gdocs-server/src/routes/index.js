@@ -1,0 +1,25 @@
+import { Router } from 'express';
+import { clerkClient, getAuth } from '@clerk/express';
+import { requireAuth } from '../middleware/requireAuth.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+
+const router = Router();
+
+router.get('/health', (req, res) => res.json({ ok: true }));
+
+router.get(
+  '/me',
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { userId } = getAuth(req);
+    const user = await clerkClient.users.getUser(userId);
+    res.json({
+      id: user.id,
+      email: user.primaryEmailAddress?.emailAddress,
+      name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+      avatarUrl: user.imageUrl,
+    });
+  })
+);
+
+export default router;
