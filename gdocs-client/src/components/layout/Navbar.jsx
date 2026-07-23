@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
+import { NotificationBell } from '@/components/notifications/NotificationBell';
 
 export function Navbar() {
   return (
@@ -7,7 +8,10 @@ export function Navbar() {
       <Link to="/" className="text-lg font-semibold">
         DocPilot
       </Link>
-      <UserButton />
+      <div className="flex items-center gap-2">
+        <NotificationBell />
+        <UserButton />
+      </div>
     </header>
   );
 }

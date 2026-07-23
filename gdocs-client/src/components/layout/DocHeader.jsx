@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { NotificationBell } from '@/components/notifications/NotificationBell';
 
 export function DocHeader({ title, onRename, isSaving }) {
   const [value, setValue] = useState(title);
@@ -32,6 +33,9 @@ export function DocHeader({ title, onRename, isSaving }) {
         className="h-8 max-w-sm border-none px-1 text-base font-medium shadow-none focus-visible:ring-1"
       />
       {isSaving && <span className="text-xs text-muted-foreground">Saving...</span>}
+      <div className="ml-auto">
+        <NotificationBell />
+      </div>
     </header>
   );
 }
