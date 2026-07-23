@@ -6,6 +6,7 @@ import { asyncHandler } from '../../utils/asyncHandler.js';
 import { createDocumentSchema, updateDocumentSchema } from './schema.js';
 import * as documentsController from './controller.js';
 import commentsRoutes from '../comments/routes.js';
+import exportRoutes from '../export/routes.js';
 
 const router = Router();
 
@@ -23,5 +24,6 @@ router.patch(
 router.delete('/:id', requireDocAccess, asyncHandler(documentsController.remove));
 
 router.use('/:id/comments', requireDocAccess, commentsRoutes);
+router.use('/:id/export', requireDocAccess, exportRoutes);
 
 export default router;

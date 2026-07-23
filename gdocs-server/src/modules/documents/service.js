@@ -1,4 +1,5 @@
 import Document from '../../models/Document.js';
+import Template from '../../models/Template.js';
 
 export function listDocuments({ userId, orgId }) {
   const query = orgId
@@ -7,11 +8,23 @@ export function listDocuments({ userId, orgId }) {
   return Document.find(query).sort({ updatedAt: -1 });
 }
 
-export function createDocument({ userId, orgId, title }) {
+export async function createDocument({ userId, orgId, title, templateId }) {
+  let contentJSON = null;
+  let resolvedTitle = title;
+
+  if (templateId) {
+    const template = await Template.findById(templateId);
+    if (template) {
+      contentJSON = template.contentJSON;
+      resolvedTitle = resolvedTitle || template.name;
+    }
+  }
+
   return Document.create({
     ownerId: userId,
     orgId: orgId || null,
-    title: title || 'Untitled document',
+    title: resolvedTitle || 'Untitled document',
+    contentJSON,
   });
 }
 

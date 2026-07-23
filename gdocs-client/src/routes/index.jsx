@@ -5,6 +5,7 @@ import SignUpPage from '@/pages/auth/SignUp';
 import Dashboard from '@/pages/Dashboard';
 import DocumentEditor from '@/pages/DocumentEditor';
 import Profile from '@/pages/Profile';
+import Templates from '@/pages/Templates';
 
 export default function AppRoutes() {
   return (
@@ -24,6 +25,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <DocumentEditor />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/templates"
+        element={
+          <ProtectedRoute>
+            <Templates />
           </ProtectedRoute>
         }
       />

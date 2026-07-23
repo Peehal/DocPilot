@@ -13,6 +13,7 @@ export async function create(req, res) {
     userId,
     orgId,
     title: req.body.title,
+    templateId: req.body.templateId,
   });
   res.status(201).json(doc);
 }

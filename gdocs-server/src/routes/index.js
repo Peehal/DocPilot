@@ -6,6 +6,7 @@ import documentsRoutes from '../modules/documents/routes.js';
 import uploadsRoutes from '../modules/uploads/routes.js';
 import liveblocksRoutes from '../modules/liveblocks/routes.js';
 import notificationsRoutes from '../modules/notifications/routes.js';
+import templatesRoutes from '../modules/templates/routes.js';
 import User from '../models/User.js';
 
 const router = Router();
@@ -14,6 +15,7 @@ router.use('/documents', documentsRoutes);
 router.use('/uploads', uploadsRoutes);
 router.use('/liveblocks-auth', liveblocksRoutes);
 router.use('/notifications', notificationsRoutes);
+router.use('/templates', templatesRoutes);
 
 router.get('/health', (req, res) => res.json({ ok: true }));
 

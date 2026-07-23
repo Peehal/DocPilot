@@ -8,6 +8,7 @@ import { ImageUpload } from './ImageUpload';
 import { MarginControls } from './MarginControls';
 import { PresenceAvatars } from './PresenceAvatars';
 import { CommentThread } from './CommentThread';
+import { ExportMenu } from './ExportMenu';
 import { CommentMark } from './extensions/CommentMark';
 import { Loader } from '@/components/shared/Loader';
 import './editor.css';
@@ -128,7 +129,10 @@ function EditorCanvas({ document }) {
 
         <div className="flex items-center justify-between px-6 py-2">
           <PresenceAvatars />
-          <MarginControls margins={margins} onChange={handleMarginsChange} />
+          <div className="flex items-center gap-1">
+            <ExportMenu documentId={document._id} title={document.title} />
+            <MarginControls margins={margins} onChange={handleMarginsChange} />
+          </div>
         </div>
 
         <div className="mx-auto max-w-4xl pb-16">

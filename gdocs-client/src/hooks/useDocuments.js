@@ -16,7 +16,8 @@ export function useDocuments() {
 export function useCreateDocument() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (title) => (await api.post('/documents', { title })).data,
+    mutationFn: async ({ title, templateId } = {}) =>
+      (await api.post('/documents', { title, templateId })).data,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['documents'] }),
   });
 }

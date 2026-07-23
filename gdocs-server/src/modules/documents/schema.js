@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const createDocumentSchema = z.object({
   title: z.string().min(1).max(200).optional(),
   orgId: z.string().nullable().optional(),
+  templateId: z.string().optional(),
 });
 
 const marginsSchema = z.object({
