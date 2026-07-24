@@ -3,9 +3,25 @@ import Template from '../../models/Template.js';
 
 export function listDocuments({ userId, orgId }) {
   const query = orgId
-    ? { orgId }
-    : { orgId: null, $or: [{ ownerId: userId }, { 'collaborators.userId': userId }] };
+    ? { orgId, deletedAt: null }
+    : {
+        orgId: null,
+        deletedAt: null,
+        $or: [{ ownerId: userId }, { 'collaborators.userId': userId }],
+      };
   return Document.find(query).sort({ updatedAt: -1 });
+}
+
+export function listSharedDocuments({ userId }) {
+  return Document.find({
+    deletedAt: null,
+    ownerId: { $ne: userId },
+    'collaborators.userId': userId,
+  }).sort({ updatedAt: -1 });
+}
+
+export function listTrash({ userId }) {
+  return Document.find({ ownerId: userId, deletedAt: { $ne: null } }).sort({ deletedAt: -1 });
 }
 
 export async function createDocument({ userId, orgId, title, templateId }) {
@@ -33,5 +49,13 @@ export function updateDocument(id, updates) {
 }
 
 export function deleteDocument(id) {
+  return Document.findByIdAndUpdate(id, { deletedAt: new Date() }, { new: true });
+}
+
+export function restoreDocument(id) {
+  return Document.findByIdAndUpdate(id, { deletedAt: null }, { new: true });
+}
+
+export function permanentlyDeleteDocument(id) {
   return Document.findByIdAndDelete(id);
 }

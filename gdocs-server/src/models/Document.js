@@ -20,6 +20,7 @@ const documentSchema = new mongoose.Schema(
       },
     ],
     isTemplate: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null, index: true },
   },
   { timestamps: true }
 );

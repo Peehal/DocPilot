@@ -139,7 +139,7 @@ export function CommentThread({ documentId, pendingAnchor, onCancelPending, onPe
   const repliesFor = (id) => comments.filter((c) => c.parentId === id);
 
   return (
-    <div className="flex w-80 shrink-0 flex-col gap-3 border-l p-4">
+    <div className="flex w-full shrink-0 flex-col gap-3 border-t p-4 lg:w-80 lg:border-l lg:border-t-0">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold">Comments</h2>
         {pendingAnchor && (

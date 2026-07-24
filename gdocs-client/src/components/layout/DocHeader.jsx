@@ -21,7 +21,7 @@ export function DocHeader({ title, onRename, isSaving }) {
   };
 
   return (
-    <header className="flex items-center gap-3 border-b px-6 py-3">
+    <header className="flex items-center gap-3 border-b px-3 py-3 sm:px-6">
       <Link to="/" className="text-muted-foreground hover:text-foreground">
         <ArrowLeft size={18} />
       </Link>

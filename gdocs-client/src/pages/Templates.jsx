@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Loader } from '@/components/shared/Loader';
+import { EmptyState } from '@/components/shared/EmptyState';
 import { TemplateThumbnail } from '@/components/shared/TemplateThumbnail';
 import { useTemplates } from '@/hooks/useTemplates';
 import { useCreateDocument } from '@/hooks/useDocuments';
@@ -31,7 +32,7 @@ export default function Templates() {
       <div className="flex">
         <Sidebar />
 
-        <div className="min-w-0 flex-1 p-8">
+        <div className="min-w-0 flex-1 p-4 sm:p-8">
           <h1 className="mb-6 text-2xl font-semibold">Templates</h1>
 
           {isLoading && <Loader />}
@@ -40,6 +41,13 @@ export default function Templates() {
             <p className="text-sm text-red-500">
               Failed to load templates: {error.response?.data?.error || error.message}
             </p>
+          )}
+
+          {!isLoading && !isError && templates?.length === 0 && (
+            <EmptyState
+              title="No templates available"
+              description="Check back later, or start from a blank document."
+            />
           )}
 
           {!isLoading &&

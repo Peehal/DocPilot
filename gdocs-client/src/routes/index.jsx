@@ -1,11 +1,16 @@
 import { Routes, Route } from 'react-router-dom';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import SignInPage from '@/pages/auth/SignIn';
 import SignUpPage from '@/pages/auth/SignUp';
+import Landing from '@/pages/Landing';
 import Dashboard from '@/pages/Dashboard';
 import DocumentEditor from '@/pages/DocumentEditor';
 import Profile from '@/pages/Profile';
 import Templates from '@/pages/Templates';
+import Recent from '@/pages/Recent';
+import Shared from '@/pages/Shared';
+import Trash from '@/pages/Trash';
 
 export default function AppRoutes() {
   return (
@@ -15,9 +20,14 @@ export default function AppRoutes() {
       <Route
         path="/"
         element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
+          <>
+            <SignedIn>
+              <Dashboard />
+            </SignedIn>
+            <SignedOut>
+              <Landing />
+            </SignedOut>
+          </>
         }
       />
       <Route
@@ -33,6 +43,30 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <Templates />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/recent"
+        element={
+          <ProtectedRoute>
+            <Recent />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/shared"
+        element={
+          <ProtectedRoute>
+            <Shared />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/trash"
+        element={
+          <ProtectedRoute>
+            <Trash />
           </ProtectedRoute>
         }
       />

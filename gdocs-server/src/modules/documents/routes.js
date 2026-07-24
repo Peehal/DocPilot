@@ -22,6 +22,12 @@ router.patch(
   asyncHandler(documentsController.update)
 );
 router.delete('/:id', requireDocAccess, asyncHandler(documentsController.remove));
+router.patch('/:id/restore', requireDocAccess, asyncHandler(documentsController.restore));
+router.delete(
+  '/:id/permanent',
+  requireDocAccess,
+  asyncHandler(documentsController.permanentRemove)
+);
 
 router.use('/:id/comments', requireDocAccess, commentsRoutes);
 router.use('/:id/export', requireDocAccess, exportRoutes);

@@ -116,8 +116,8 @@ function EditorCanvas({ document }) {
   };
 
   return (
-    <div className="flex">
-      <div className="flex-1">
+    <div className="flex flex-col lg:flex-row">
+      <div className="min-w-0 flex-1">
         <Toolbar
           editor={editor}
           onInsertImage={() => imageUploadRef.current?.open()}
@@ -135,14 +135,14 @@ function EditorCanvas({ document }) {
           </div>
         </div>
 
-        <div className="mx-auto max-w-4xl pb-16">
+        <div className="mx-auto max-w-4xl px-2 pb-16 sm:px-0">
           <div
             className="min-h-[70vh] rounded-lg border bg-background shadow-sm"
             style={{
-              paddingTop: margins.top,
-              paddingBottom: margins.bottom,
-              paddingLeft: margins.left,
-              paddingRight: margins.right,
+              paddingTop: `clamp(24px, 6vh, ${margins.top}px)`,
+              paddingBottom: `clamp(24px, 6vh, ${margins.bottom}px)`,
+              paddingLeft: `clamp(16px, 6vw, ${margins.left}px)`,
+              paddingRight: `clamp(16px, 6vw, ${margins.right}px)`,
             }}
           >
             <EditorContent editor={editor} />
