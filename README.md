@@ -3,7 +3,7 @@
 A real-time, collaborative document editor — a Google Docs clone built end-to-end as a portfolio project.
 
 **🔗 Live demo:** [doc-pilot-five.vercel.app](https://doc-pilot-five.vercel.app)
-*(the backend is on Render's free tier, so the first request after a period of inactivity can take 30-50s to wake up 🐢)*
+
 
 Built with ❤️ by **Peehal**.
 
